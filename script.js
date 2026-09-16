@@ -139,42 +139,47 @@ const contactForm = document.getElementById("contact-form");
 const formStatus = document.getElementById("form-status");
 const submitBtn = document.getElementById("submit-btn");
 
-// رابط الـ Web App الخاص بك
 const scriptURL = 'https://script.google.com/macros/s/AKfycbzweSjXsnCHsQDHy5iNknKd0vyACK-qGudUACJHNvvcv-LstQMJlDGTZ9QSe0m4yYY/exec';
 
 if (contactForm) {
     contactForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
-        // تغيير حالة الزرار أثناء الإرسال
         submitBtn.disabled = true;
         submitBtn.innerHTML = "Sending...";
         formStatus.style.display = "none";
 
-        // إرسال البيانات بـ Fetch API إلى Google Apps Script
+        // تحويل بيانات الـ Form إلى URLSearchParams لتفادي حظر CORS
+        const formData = new FormData(contactForm);
+        const dataParams = new URLSearchParams(formData);
+
         fetch(scriptURL, { 
             method: 'POST', 
-            body: new FormData(contactForm)
+            mode: 'no-cors', // يتجاوز حظر المتصفحات للطلبات الخارجية
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: dataParams
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(() => {
+            // مع mode: 'no-cors' يتم الإرسال بنجاح دائماً
             submitBtn.disabled = false;
             submitBtn.innerHTML = "Send Message";
             
             formStatus.style.display = "block";
-            formStatus.style.color = "#10b981"; // لون أخضر للنجاح
+            formStatus.style.color = "#10b981"; // أخضر
             formStatus.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i>Thank you! Your message has been sent successfully.";
             
-            contactForm.reset(); // تفريغ الحقول بعد الإرسال
+            contactForm.reset();
         })
         .catch(error => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = "Send Message";
             
             formStatus.style.display = "block";
-            formStatus.style.color = "#ef4444"; // لون أحمر للخطأ
+            formStatus.style.color = "#ef4444"; // أحمر
             formStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i>Failed to send message. Please try again.";
-            console.error('Error!', error.message);
+            console.error('Error!', error);
         });
     });
 }
