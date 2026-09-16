@@ -196,32 +196,34 @@
         </div>
 
         <h2 class="heading_text" id="contact_text" data-aos="fade-down">Contact Me</h2>
-        <div class="contact-box my-4">
-            <form action="https://formspree.io/f/xljdryrj" method="POST">
-                <div class="row g-3">
-                    <div class="col-md-6" data-aos="fade-right">
-                        <label for="name">Name</label>
-                        <input type="text" name="Name" id="name" class="form-control custom-input" placeholder="Your Name" required>
-                    </div>
-                    <div class="col-md-6" data-aos="fade-right">
-                        <label for="email">Email Address</label>
-                        <input type="email" name="Email" id="email" class="form-control custom-input" placeholder="*******@gmail.com" required>
-                    </div>
-                    <div class="col-12" data-aos="fade-right">
-                        <label for="phone">Phone Number</label>
-                        <input type="text" name="Phone" id="phone" class="form-control custom-input" placeholder="01*********" required>
-                    </div>
-                    <div class="col-12" data-aos="fade-right">
-                        <label for="message">Message</label>
-                        <textarea name="Message" id="message" rows="4" class="form-control custom-input" placeholder="How can I help you with your data?" required></textarea>
-                    </div>
-                    <div class="col-12 text-center mt-4" data-aos="fade-up">
-                        <button type="submit" class="submit-btn">Send Message</button>
-                    </div>
-                </div>
-            </form>
+<div class="contact-box my-4">
+    <form action="https://formspree.io/f/xljdryrj" method="POST">
+        <!-- خيار لإعادة التوجيه بعد الإرسال (اختياري) -->
+        <!-- <input type="hidden" name="_next" value="https://youssefmohamed18.github.io/"> -->
+        
+        <div class="row g-3">
+            <div class="col-md-6" data-aos="fade-right">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" class="form-control custom-input" placeholder="Your Name" required>
+            </div>
+            <div class="col-md-6" data-aos="fade-right">
+                <label for="email">Email Address</label>
+                <input type="email" name="email" id="email" class="form-control custom-input" placeholder="*******@gmail.com" required>
+            </div>
+            <div class="col-12" data-aos="fade-right">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" id="phone" class="form-control custom-input" placeholder="01*********" required>
+            </div>
+            <div class="col-12" data-aos="fade-right">
+                <label for="message">Message</label>
+                <textarea name="message" id="message" rows="4" class="form-control custom-input" placeholder="How can I help you with your data?" required></textarea>
+            </div>
+            <div class="col-12 text-center mt-4" data-aos="fade-up">
+                <button type="submit" class="submit-btn">Send Message</button>
+            </div>
         </div>
-    </div>
+    </form>
+</div>
 
     <footer>
         <ul>
