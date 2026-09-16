@@ -131,3 +131,46 @@ themeToggleBtn.addEventListener("click", function () {
 
     localStorage.setItem("theme", theme);
 });
+
+// ==========================================
+// EmailJS Direct Integration (No Redirects)
+// ==========================================
+(function() {
+    emailjs.init("6PZTP7GToVB8-_mD9");
+})();
+
+const contactForm = document.getElementById("contact-form");
+const formStatus = document.getElementById("form-status");
+const submitBtn = document.getElementById("submit-btn");
+
+if (contactForm) {
+    contactForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // تغيير حالة الزرار أثناء الإرسال
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = "Sending...";
+        formStatus.style.display = "none";
+
+        // إرسال البيانات بـ EmailJS
+        emailjs.sendForm('service_6fwp75l', 'template_ldii7n3', this)
+            .then(function() {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "Send Message";
+                
+                formStatus.style.display = "block";
+                formStatus.style.color = "#10b981"; // لون أخضر
+                formStatus.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i>Thank you! Your message has been sent successfully.";
+                
+                contactForm.reset(); // تفريغ الخانات
+            }, function(error) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "Send Message";
+                
+                formStatus.style.display = "block";
+                formStatus.style.color = "#ef4444"; // لون أحمر
+                formStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i>Failed to send message. Please try again.";
+                console.error('EmailJS Error:', error);
+            });
+    });
+}
