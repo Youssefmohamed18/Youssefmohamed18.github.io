@@ -133,15 +133,14 @@ themeToggleBtn.addEventListener("click", function () {
 });
 
 // ==========================================
-// EmailJS Direct Integration (No Redirects)
+// Google Apps Script Direct Integration
 // ==========================================
-(function() {
-    emailjs.init("6PZTP7GToVB8-_mD9");
-})();
-
 const contactForm = document.getElementById("contact-form");
 const formStatus = document.getElementById("form-status");
 const submitBtn = document.getElementById("submit-btn");
+
+// رابط الـ Web App الخاص بك
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzweSjXsnCHsQDHy5iNknKd0vyACK-qGudUACJHNvvcv-LstQMJlDGTZ9QSe0m4yYY/exec';
 
 if (contactForm) {
     contactForm.addEventListener("submit", function(event) {
@@ -152,25 +151,30 @@ if (contactForm) {
         submitBtn.innerHTML = "Sending...";
         formStatus.style.display = "none";
 
-        // إرسال البيانات بـ EmailJS
-        emailjs.sendForm('service_6fwp75l', 'template_ldii7n3', this)
-            .then(function() {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = "Send Message";
-                
-                formStatus.style.display = "block";
-                formStatus.style.color = "#10b981"; // لون أخضر
-                formStatus.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i>Thank you! Your message has been sent successfully.";
-                
-                contactForm.reset(); // تفريغ الخانات
-            }, function(error) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = "Send Message";
-                
-                formStatus.style.display = "block";
-                formStatus.style.color = "#ef4444"; // لون أحمر
-                formStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i>Failed to send message. Please try again.";
-                console.error('EmailJS Error:', error);
-            });
+        // إرسال البيانات بـ Fetch API إلى Google Apps Script
+        fetch(scriptURL, { 
+            method: 'POST', 
+            body: new FormData(contactForm)
+        })
+        .then(response => response.json())
+        .then(data => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "Send Message";
+            
+            formStatus.style.display = "block";
+            formStatus.style.color = "#10b981"; // لون أخضر للنجاح
+            formStatus.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i>Thank you! Your message has been sent successfully.";
+            
+            contactForm.reset(); // تفريغ الحقول بعد الإرسال
+        })
+        .catch(error => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "Send Message";
+            
+            formStatus.style.display = "block";
+            formStatus.style.color = "#ef4444"; // لون أحمر للخطأ
+            formStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i>Failed to send message. Please try again.";
+            console.error('Error!', error.message);
+        });
     });
 }
