@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hajj Pilgrimage Analytics | Case Study</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" href="images/youssef.jpg">
 </head>
@@ -34,13 +34,13 @@
 
         <!-- Interactive Image Carousel for Hajj (2 Images) -->
         <div class="custom-card p-3 mb-5">
-            <div id="hajjCarousel" class="carousel slide" data-bs-ride="false">
+            <div id="hajjCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner rounded">
                     <div class="carousel-item active">
                         <img src="images/Overview_Page.png" class="d-block w-100" alt="Hajj Overview Dashboard">
                     </div>
                     <div class="carousel-item">
-                        <img src="images/Demographics_Page.png" class="d-block w-100" alt="Hajj Demographic Analysis">
+                        <img src="images/Demographic_Page.png" class="d-block w-100" alt="Hajj Demographic Analysis">
                     </div>
                 </div>
 
@@ -56,9 +56,9 @@
             </div>
 
             <!-- Thumbnails Selector Below -->
-            <div class="thumbnail-container py-2">
-                <img src="images/Overview_Page.png" data-bs-target="#hajjCarousel" data-bs-slide-to="0" class="img-thumbnail carousel-thumb active" alt="Overview Thumbnail">
-                <img src="images/Demographics_Page.png" data-bs-target="#hajjCarousel" data-bs-slide-to="1" class="img-thumbnail carousel-thumb" alt="Demographics Thumbnail">
+            <div class="d-flex gap-2 justify-content-center mt-3 py-2">
+                <img src="images/Overview_Page.png" data-bs-target="#hajjCarousel" data-bs-slide-to="0" class="img-thumbnail carousel-thumb active" style="width: 100px; height: 65px; object-fit: cover; cursor: pointer;">
+                <img src="images/Demographic_Page.png" data-bs-target="#hajjCarousel" data-bs-slide-to="1" class="img-thumbnail carousel-thumb" style="width: 100px; height: 65px; object-fit: cover; cursor: pointer;">
             </div>
         </div>
 
