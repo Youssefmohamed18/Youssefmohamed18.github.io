@@ -436,3 +436,26 @@ footer span a {
     top: 50%;
     transform: translateY(-50%);
 }
+
+/* Carousel Thumbnails Custom Styling */
+.carousel-thumb {
+    width: 100px;
+    height: 65px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.55;
+    border: 2px solid transparent !important;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+}
+
+.carousel-thumb:hover {
+    opacity: 0.85;
+}
+
+.carousel-thumb.active {
+    opacity: 1;
+    border: 3px solid #0d6efd !important; /* يمكنك تغيير هذا اللون إلى لون الـ Theme الخاص بك */
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
+    transform: scale(1.05);
+}
