@@ -365,6 +365,10 @@ footer span a {
     text-decoration: none;
 }
 
+#scroll_top.show {
+    bottom: 25px;
+}
+
 /* ==========================================
    Custom CSS Loading Screen & Spinner
    ========================================== */
@@ -379,7 +383,12 @@ footer span a {
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    transition: background-color 0.3s ease;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading.hidden {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* حركة الدوران للـ Spinner */
@@ -402,6 +411,11 @@ footer span a {
 }
 
 /* Carousel Thumbnails Custom Styling */
+.carousel-item img {
+    max-height: 550px;
+    object-fit: contain;
+}
+
 .carousel-thumb {
     opacity: 0.6;
     transition: all 0.3s ease;
@@ -410,13 +424,13 @@ footer span a {
 
 .carousel-thumb:hover, .carousel-thumb.active {
     opacity: 1;
-    border-color: #00d2ff !important;
+    border-color: var(--accent-color) !important;
     transform: scale(1.05);
 }
 
 .carousel-control-prev, .carousel-control-next {
     width: 8%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     height: 50px;
     top: 50%;
