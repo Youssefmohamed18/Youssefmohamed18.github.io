@@ -206,3 +206,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const hajjCarousel = document.getElementById('hajjCarousel');
+
+    if (hajjCarousel) {
+        // 1. التحديث عند تغيير الشرائح من الأسهم أو السحب
+        hajjCarousel.addEventListener('slid.bs.carousel', function (event) {
+            const activeIndex = event.to;
+            updateActiveThumbnail(activeIndex);
+        });
+
+        // 2. التحديث الفوري عند الضغط على أي صورة مصغرة
+        const thumbs = document.querySelectorAll('.thumbnail-container .carousel-thumb');
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', function () {
+                updateActiveThumbnail(index);
+            });
+        });
+    }
+
+    function updateActiveThumbnail(index) {
+        const thumbs = document.querySelectorAll('.thumbnail-container .carousel-thumb');
+        thumbs.forEach(t => t.classList.remove('active'));
+        if (thumbs[index]) {
+            thumbs[index].classList.add('active');
+        }
+    }
+});
