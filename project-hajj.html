@@ -32,13 +32,35 @@
             </a>
         </div>
 
-        <div class="row g-3 mb-5">
-            <div class="col-md-12">
-                <div class="custom-card p-2 text-center">
-                    <img src="images/Hajj_dashboard.png" alt="Hajj Analytics Dashboard" class="img-fluid rounded w-100">
-                </div>
+    <!-- Interactive Image Carousel for Hajj (2 Images) -->
+<div class="custom-card p-3 mb-5">
+    <div id="hajjCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded">
+            <div class="carousel-item active">
+                <img src="images/Overview_Page.png" class="d-block w-100" alt="Hajj Overview Dashboard">
+            </div>
+            <div class="carousel-item">
+                <img src="images/Demographic_Page.png" class="d-block w-100" alt="Hajj Detailed Analysis">
             </div>
         </div>
+
+        <!-- Arrows Left / Right -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#hajjCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#hajjCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Thumbnails Selector Below -->
+    <div class="d-flex gap-2 justify-content-center mt-3 py-2">
+        <img src="images/Overview_Page.png" data-bs-target="#hajjCarousel" data-bs-slide-to="0" class="img-thumbnail carousel-thumb active" style="width: 100px; height: 65px; object-fit: cover; cursor: pointer;">
+        <img src="images/Demographic_Page.png" data-bs-target="#hajjCarousel" data-bs-slide-to="1" class="img-thumbnail carousel-thumb" style="width: 100px; height: 65px; object-fit: cover; cursor: pointer;">
+    </div>
+</div>
 
         <div class="custom-card p-4 mb-4">
             <h3 class="text-highlight mb-3"><i class="fa-solid fa-bullseye me-2"></i>1. Problem Statement</h3>
@@ -75,6 +97,6 @@
     <footer class="text-center py-4">
         <span>© 2026 Developed By <a href="https://github.com/Youssefmohamed18" target="_blank">Youssef Mohamed</a></span>
     </footer>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
