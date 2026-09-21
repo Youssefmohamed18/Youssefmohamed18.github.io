@@ -459,3 +459,59 @@ footer span a {
     box-shadow: 0 0 10px rgba(13, 110, 253, 0.4);
     transform: scale(1.05);
 }
+
+/* --- Fix Carousel Overflow & Image Sizing --- */
+.custom-card {
+    position: relative;
+    overflow: hidden; /* يمنع خروج الصور خارج الحاوية */
+}
+
+.carousel {
+    width: 100%;
+    position: relative;
+}
+
+.carousel-inner {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    max-height: 550px; /* تحديد أقصى ارتفاع لمنع تمدد الصورة */
+    object-fit: contain; /* للحفاظ على أبعاد Dashboard دون قص */
+    display: block;
+}
+
+/* --- Thumbnails Section Styling --- */
+.thumbnail-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.carousel-thumb {
+    width: 110px !important;
+    height: 70px !important;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.5;
+    border: 2px solid transparent !important;
+    border-radius: 6px;
+    transition: all 0.25s ease-in-out;
+}
+
+.carousel-thumb:hover {
+    opacity: 0.85;
+}
+
+/* إطار الصورة النشطة فقط */
+.carousel-thumb.active {
+    opacity: 1;
+    border: 3px solid #0d6efd !important; /* لون الأزرق النشط */
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+    transform: scale(1.05);
+}
