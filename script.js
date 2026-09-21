@@ -184,3 +184,25 @@ if (contactForm) {
             });
     });
 }
+
+
+// Dynamic Carousel Thumbnail Sync
+document.addEventListener('DOMContentLoaded', function () {
+    const carousels = document.querySelectorAll('.carousel');
+
+    carousels.forEach(carousel => {
+        carousel.addEventListener('slid.bs.carousel', function (event) {
+            const carouselId = this.id;
+            const thumbnails = document.querySelectorAll(`[data-bs-target="#${carouselId}"]`);
+            
+            if (thumbnails.length > 0) {
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                
+                const activeIndex = event.to;
+                if (thumbnails[activeIndex]) {
+                    thumbnails[activeIndex].classList.add('active');
+                }
+            }
+        });
+    });
+});
