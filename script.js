@@ -1,17 +1,20 @@
 // Initialize AOS Animation Library
-AOS.init({
-    duration: 800,
-    once: true
-});
+if (typeof AOS !== 'undefined') {
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+}
 
 // Hide Loading Screen on Window Load
-$(window).bind("load", function () {
-    $(".loading").fadeOut("slow");
-});
+if (typeof $ !== 'undefined') {
+    $(window).on("load", function () {
+        $(".loading").fadeOut("slow");
+    });
+}
 
 // Auto Typing Animation
 const TypingText = document.querySelector(".TypedText");
-
 const textArray = ["SQL Queries", "Power BI Dashboards", "Excel Analytics", "Python EDA"];
 const typingDelay = 150;
 const erasingDelay = 80;
@@ -47,94 +50,112 @@ function erase() {
     }
 }
 
-// Smooth Scroll Navigation with Exact Header Offsets
-$(".who_am_i").click(function (e) {
-    e.preventDefault();
-    updateActiveNav($(this));
-    $('html, body').animate({ scrollTop: $("#who_am_i_text").offset().top - 90 }, 600);
-});
+// Smooth Scroll Navigation with Exact Header Offsets (jQuery)
+if (typeof $ !== 'undefined') {
+    $(".who_am_i").click(function (e) {
+        e.preventDefault();
+        updateActiveNav($(this));
+        if ($("#who_am_i_text").length) {
+            $('html, body').animate({ scrollTop: $("#who_am_i_text").offset().top - 90 }, 600);
+        }
+    });
 
-$(".skills_nav").click(function (e) {
-    e.preventDefault();
-    updateActiveNav($(this));
-    $('html, body').animate({ scrollTop: $("#skills_text").offset().top - 90 }, 600);
-});
+    $(".skills_nav").click(function (e) {
+        e.preventDefault();
+        updateActiveNav($(this));
+        if ($("#skills_text").length) {
+            $('html, body').animate({ scrollTop: $("#skills_text").offset().top - 90 }, 600);
+        }
+    });
 
-$(".services").click(function (e) {
-    e.preventDefault();
-    updateActiveNav($(this));
-    $('html, body').animate({ scrollTop: $("#services_text").offset().top - 90 }, 600);
-});
+    $(".services").click(function (e) {
+        e.preventDefault();
+        updateActiveNav($(this));
+        if ($("#services_text").length) {
+            $('html, body').animate({ scrollTop: $("#services_text").offset().top - 90 }, 600);
+        }
+    });
 
-$(".projects_nav").click(function (e) {
-    e.preventDefault();
-    updateActiveNav($(this));
-    $('html, body').animate({ scrollTop: $("#projects_text").offset().top - 90 }, 600);
-});
+    $(".projects_nav").click(function (e) {
+        e.preventDefault();
+        updateActiveNav($(this));
+        if ($("#projects_text").length) {
+            $('html, body').animate({ scrollTop: $("#projects_text").offset().top - 90 }, 600);
+        }
+    });
 
-$(".contact").click(function (e) {
-    e.preventDefault();
-    updateActiveNav($(this));
-    $('html, body').animate({ scrollTop: $("#contact_text").offset().top - 90 }, 600);
-});
+    $(".contact").click(function (e) {
+        e.preventDefault();
+        updateActiveNav($(this));
+        if ($("#contact_text").length) {
+            $('html, body').animate({ scrollTop: $("#contact_text").offset().top - 90 }, 600);
+        }
+    });
 
-function updateActiveNav(element) {
-    $(".nav-container ul a").removeClass('active');
-    element.addClass('active');
-}
-
-// Scroll to Top Button Toggle
-$(document).scroll(function () {
-    var y = $(this).scrollTop();
-    if (y >= 150) {
-        $('#scroll_top').css("bottom", "30px");
-    } else {
-        $('#scroll_top').css("bottom", "-100px");
+    function updateActiveNav(element) {
+        $(".nav-container ul a").removeClass('active');
+        element.addClass('active');
     }
-});
 
-// Smooth Scroll to Top
-$("#scroll_top").click(function (e) {
-    e.preventDefault();
-    $('html, body').animate({ scrollTop: 0 }, 500);
-});
+    // Scroll to Top Button Toggle
+    $(document).scroll(function () {
+        var y = $(this).scrollTop();
+        if (y >= 150) {
+            $('#scroll_top').css("bottom", "30px");
+        } else {
+            $('#scroll_top').css("bottom", "-100px");
+        }
+    });
+
+    // Smooth Scroll to Top
+    $("#scroll_top").click(function (e) {
+        e.preventDefault();
+        $('html, body').animate({ scrollTop: 0 }, 500);
+    });
+}
 
 // Dark / Light Mode Toggle Functionality
 const themeToggleBtn = document.getElementById("theme-toggle");
 const themeIcon = document.getElementById("theme-icon");
-
-// Check saved theme preference or default to Dark Mode
 const currentTheme = localStorage.getItem("theme");
 
 if (currentTheme === "light") {
     document.body.classList.add("light-mode");
-    themeIcon.classList.remove("fa-moon");
-    themeIcon.classList.add("fa-sun");
-} else {
-    document.body.classList.remove("light-mode");
-    themeIcon.classList.remove("fa-sun");
-    themeIcon.classList.add("fa-moon");
-}
-
-themeToggleBtn.addEventListener("click", function () {
-    document.body.classList.toggle("light-mode");
-
-    let theme = "dark";
-    if (document.body.classList.contains("light-mode")) {
-        theme = "light";
+    if (themeIcon) {
         themeIcon.classList.remove("fa-moon");
         themeIcon.classList.add("fa-sun");
-    } else {
+    }
+} else {
+    document.body.classList.remove("light-mode");
+    if (themeIcon) {
         themeIcon.classList.remove("fa-sun");
         themeIcon.classList.add("fa-moon");
     }
+}
 
-    localStorage.setItem("theme", theme);
-});
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener("click", function () {
+        document.body.classList.toggle("light-mode");
 
-// ==========================================
+        let theme = "dark";
+        if (document.body.classList.contains("light-mode")) {
+            theme = "light";
+            if (themeIcon) {
+                themeIcon.classList.remove("fa-moon");
+                themeIcon.classList.add("fa-sun");
+            }
+        } else {
+            if (themeIcon) {
+                themeIcon.classList.remove("fa-sun");
+                themeIcon.classList.add("fa-moon");
+            }
+        }
+
+        localStorage.setItem("theme", theme);
+    });
+}
+
 // Google Apps Script Direct Integration
-// ==========================================
 const contactForm = document.getElementById("contact-form");
 const formStatus = document.getElementById("form-status");
 const submitBtn = document.getElementById("submit-btn");
@@ -149,25 +170,23 @@ if (contactForm) {
         submitBtn.innerHTML = "Sending...";
         formStatus.style.display = "none";
 
-        // تحويل بيانات الـ Form إلى URLSearchParams لتفادي حظر CORS
         const formData = new FormData(contactForm);
         const dataParams = new URLSearchParams(formData);
 
         fetch(scriptURL, { 
             method: 'POST', 
-            mode: 'no-cors', // يتجاوز حظر المتصفحات للطلبات الخارجية
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: dataParams
         })
         .then(() => {
-            // مع mode: 'no-cors' يتم الإرسال بنجاح دائماً
             submitBtn.disabled = false;
             submitBtn.innerHTML = "Send Message";
             
             formStatus.style.display = "block";
-            formStatus.style.color = "#10b981"; // أخضر
+            formStatus.style.color = "#10b981";
             formStatus.innerHTML = "<i class='fa-solid fa-circle-check me-2'></i>Thank you! Your message has been sent successfully.";
             
             contactForm.reset();
@@ -177,7 +196,7 @@ if (contactForm) {
             submitBtn.innerHTML = "Send Message";
             
             formStatus.style.display = "block";
-            formStatus.style.color = "#ef4444"; // أحمر
+            formStatus.style.color = "#ef4444";
             formStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-2'></i>Failed to send message. Please try again.";
             console.error('Error!', error);
         });
