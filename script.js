@@ -55,12 +55,29 @@ function erase() {
     }
 }
 
-// Smooth Scroll Navigation (Unified Handler)
+// Unified Smooth Scroll Navigation for All Navbar Links
 if (typeof $ !== 'undefined') {
-    $(".nav-container ul a, .scroll-link").click(function (e) {
-        const targetId = $(this).attr("href");
-        if (targetId && targetId.startsWith("#") && targetId.length > 1) {
-            e.preventDefault();
+    $(".nav-container ul a").click(function (e) {
+        e.preventDefault();
+        
+        let targetId = "";
+        
+        // تحديد القسم المستهدف بناءً على الكلاس أو نوع الـ Link
+        if ($(this).hasClass("who_am_i")) {
+            targetId = "#who_am_i_text";
+        } else if ($(this).hasClass("cert_nav")) {
+            targetId = "#certificates_text";
+        } else if ($(this).hasClass("skills_nav")) {
+            targetId = "#skills_text";
+        } else if ($(this).hasClass("services")) {
+            targetId = "#services_text";
+        } else if ($(this).hasClass("projects_nav")) {
+            targetId = "#projects_text";
+        } else if ($(this).hasClass("contact")) {
+            targetId = "#contact_text";
+        }
+
+        if (targetId) {
             const targetElement = $(targetId);
             if (targetElement.length) {
                 $(".nav-container ul a").removeClass('active');
@@ -182,19 +199,5 @@ if (contactForm) {
                 }
                 console.error('Error!', error);
             });
-    });
-}
-
-
-// Smooth Scroll for Certifications Nav Link
-if (typeof $ !== 'undefined') {
-    $(".cert_nav").click(function (e) {
-        e.preventDefault();
-        const targetElement = $("#certificates_text");
-        if (targetElement.length) {
-            $(".nav-container ul a").removeClass('active');
-            $(this).addClass('active');
-            $('html, body').animate({ scrollTop: targetElement.offset().top - 90 }, 600);
-        }
     });
 }
