@@ -54,7 +54,7 @@ function erase() {
     }
 }
 
-// --- Smooth Scroll & Active Navbar State (Fully Fixed with Dynamic Thresholds) ---
+// --- Smooth Scroll & Active Navbar State (Final Optimized Version) ---
 document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".nav-container ul a, footer ul a");
     const navbarLinksOnly = document.querySelectorAll(".nav-container ul a");
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (targetElement) {
                     e.preventDefault();
 
-                    // تحديث الـ Active class في الـ Navbar فوراً عند الضغط
+                    // تحديث الـ Active class في الـ Navbar فوراً
                     navbarLinksOnly.forEach(l => l.classList.remove("active"));
                     if (this.closest(".nav-container")) {
                         this.classList.add("active");
@@ -99,12 +99,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 2. التحديث التلقائي أثناء السحب (Scroll Observer معدل بدقة عالية لضمان التفاعل مع About Me)
+    // 2. التحديث التلقائي أثناء السحب (تم تقصير الهوامش لتناسب الأقسام القصيرة جداً مثل About Me)
     const observerOptions = {
         root: null,
-        // تم ضبط الهامش العلوي والسفلي لضمان التقاط القسم عندما يتوسط الشاشة تماماً
-        rootMargin: "-30% 0px -40% 0px",
-        threshold: 0.1
+        // هوامش ضيقة تلتقط القسم بمجرد دخوله لنطاق الرؤية العلوي
+        rootMargin: "-10px 0px -60% 0px",
+        threshold: 0
     };
 
     const observer = new IntersectionObserver(function (entries) {
@@ -228,7 +228,7 @@ if (contactForm) {
             .catch(error => {
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitCache.innerHTML = "Send Message";
+                    submitBtn.innerHTML = "Send Message";
                 }
                 if (formStatus) {
                     formStatus.style.display = "block";
