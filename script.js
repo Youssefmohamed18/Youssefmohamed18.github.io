@@ -55,7 +55,7 @@ function erase() {
     }
 }
 
-// Smooth Scroll Navigation (Unified Handler for Navbar & Footer Links)
+// Unified Smooth Scroll Navigation & Scroll Spy for Navbar
 if (typeof $ !== 'undefined') {
     $(".nav-container ul a, footer ul a").click(function (e) {
         const targetId = $(this).attr("href");
@@ -70,13 +70,40 @@ if (typeof $ !== 'undefined') {
         }
     });
 
-    // Scroll to Top Button Toggle
-    $(document).scroll(function () {
+    // Auto Update Active Nav Link on Page Scroll (Scroll Spy)
+    $(window).scroll(function () {
+        const scrollPos = $(window).scrollTop() + 150;
+        
+        $("h2.heading_text").each(function () {
+            const currHeading = $(this);
+            const refElement = $("#" + currHeading.attr("id"));
+            
+            if (refElement.length && refElement.offset().top <= scrollPos && refElement.offset().top + refElement.outerHeight() > scrollPos) {
+                $(".nav-container ul a").removeClass("active");
+                const headingId = currHeading.attr("id");
+                
+                if (headingId === "who_am_i_text") {
+                    $(".nav-container ul a.who_am_i").addClass("active");
+                } else if (headingId === "certificates_text") {
+                    $(".nav-container ul a.cert_nav").addClass("active");
+                } else if (headingId === "skills_text") {
+                    $(".nav-container ul a.skills_nav").addClass("active");
+                } else if (headingId === "services_text") {
+                    $(".nav-container ul a.services").addClass("active");
+                } else if (headingId === "projects_text") {
+                    $(".nav-container ul a.projects_nav").addClass("active");
+                } else if (headingId === "contact_text") {
+                    $(".nav-container ul a.contact").addClass("active");
+                }
+            }
+        });
+
+        // Scroll to Top Button Toggle
         var y = $(this).scrollTop();
         if (y >= 150) {
-            $('#scroll_top').css("bottom", "30px");
+            $('#scroll_top').addClass("show");
         } else {
-            $('#scroll_top').css("bottom", "-100px");
+            $('#scroll_top').removeClass("show");
         }
     });
 
