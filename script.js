@@ -55,29 +55,12 @@ function erase() {
     }
 }
 
-// Unified Smooth Scroll Navigation for All Navbar Links
+// Smooth Scroll Navigation (Unified Handler for Navbar & Footer Links)
 if (typeof $ !== 'undefined') {
-    $(".nav-container ul a").click(function (e) {
-        e.preventDefault();
-        
-        let targetId = "";
-        
-        // تحديد القسم المستهدف بناءً على الكلاس أو نوع الـ Link
-        if ($(this).hasClass("who_am_i")) {
-            targetId = "#who_am_i_text";
-        } else if ($(this).hasClass("cert_nav")) {
-            targetId = "#certificates_text";
-        } else if ($(this).hasClass("skills_nav")) {
-            targetId = "#skills_text";
-        } else if ($(this).hasClass("services")) {
-            targetId = "#services_text";
-        } else if ($(this).hasClass("projects_nav")) {
-            targetId = "#projects_text";
-        } else if ($(this).hasClass("contact")) {
-            targetId = "#contact_text";
-        }
-
-        if (targetId) {
+    $(".nav-container ul a, footer ul a").click(function (e) {
+        const targetId = $(this).attr("href");
+        if (targetId && targetId.startsWith("#") && targetId.length > 1) {
+            e.preventDefault();
             const targetElement = $(targetId);
             if (targetElement.length) {
                 $(".nav-container ul a").removeClass('active');
