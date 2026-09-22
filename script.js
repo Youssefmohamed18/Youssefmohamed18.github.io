@@ -7,8 +7,7 @@ if (typeof AOS !== 'undefined') {
 }
 
 // Hide Loading Screen on Window Load
-if (typeof $ !== 'undefined') {
-    $(window).on("load", function () {
+if (typeof $!== 'undefined') {$(window).on("load", function () {
         $(".loading").fadeOut("slow");
     });
 } else {
@@ -55,46 +54,56 @@ function erase() {
     }
 }
 
-// Smooth Scroll Navigation for Navbar & Footer Links
-if (typeof $ !== 'undefined') {
-    $(".nav-container ul a, footer ul a").click(function (e) {
-        const targetId = $(this).attr("href");
-        if (targetId && targetId.startsWith("#") && targetId.length > 1) {
-            e.preventDefault();
-            const targetElement = $(targetId);
-            if (targetElement.length) {
-                $(".nav-container ul a").removeClass('active');
-                $(this).addClass('active');
-                $('html, body').animate({ scrollTop: targetElement.offset().top - 90 }, 600);
-            }
-        }
-    });
-
-    // Scroll to Top Button Toggle
-    $(document).scroll(function () {
-        var y = $(this).scrollTop();
-        if (y >= 150) {
-            $('#scroll_top').addClass("show");
-        } else {
-            $('#scroll_top').removeClass("show");
-        }
-    });
-
-    // Smooth Scroll to Top
-    $("#scroll_top").click(function (e) {
-        e.preventDefault();
-        $('html, body').animate({ scrollTop: 0 }, 500);
-    });
-}
-
-// Modern Intersection Observer for Navbar Active State (Accurate & Smooth)
+// --- Smooth Scroll & Active Navbar State (Fully Fixed & Unified) ---
 document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll(".main-content h2.heading_text");
-    const navLinks = document.querySelectorAll(".nav-container ul a");
+    const navLinks = document.querySelectorAll(".nav-container ul a, footer ul a");
+    const navbarLinksOnly = document.querySelectorAll(".nav-container ul a");
 
+    // جمع الأقسام الحقيقية بناءً على الـ IDs الموجودة في الـ Navigation
+    const sections = Array.from(navbarLinksOnly).map(link => {
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#") && href.length > 1) {
+            return document.querySelector(href);
+        }
+        return null;
+    }).filter(section => section !== null);
+
+    // 1. التفاعل عند الضغط (Click) والانتقال السلس
+    navLinks.forEach(link => {
+        link.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
+            if (href && href.startsWith("#") && href.length > 1) {
+                const targetElement = document.querySelector(href);
+                if (targetElement) {
+                    e.preventDefault();
+
+                    // تحديث الـ Active class في الـ Navbar فقط
+                    navbarLinksOnly.forEach(l => l.classList.remove("active"));
+                    if (this.closest(".nav-container")) {
+                        this.classList.add("active");
+                    } else {
+                        // لو الضغط من الفوتر، حدد العنصر المماثل في الناف بار
+                        navbarLinksOnly.forEach(l => {
+                            if (l.getAttribute("href") === href) {
+                                l.classList.add("active");
+                            }
+                        });
+                    }
+
+                    // التمرير السلس للمكان المطلوب
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: "smooth"
+                    });
+                }
+            }
+        });
+    });
+
+    // 2. التحديث التلقائي أثناء السحب (Scroll Observer)
     const observerOptions = {
         root: null,
-        rootMargin: "-20% 0px -60% 0px",
+        rootMargin: "-30% 0px -50% 0px",
         threshold: 0
     };
 
@@ -102,10 +111,9 @@ document.addEventListener("DOMContentLoaded", function () {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.getAttribute("id");
-                navLinks.forEach(link => {
+                navbarLinksOnly.forEach(link => {
                     link.classList.remove("active");
-                    const href = link.getAttribute("href");
-                    if (href && href.includes(id)) {
+                    if (link.getAttribute("href") === `#${id}`) {
                         link.classList.add("active");
                     }
                 });
@@ -117,6 +125,22 @@ document.addEventListener("DOMContentLoaded", function () {
         observer.observe(section);
     });
 });
+
+// Scroll to Top Button Toggle & Action
+if (typeof $!== 'undefined') {$(document).scroll(function () {
+        var y = $(this).scrollTop();
+        if (y >= 150) {
+            $('#scroll_top').addClass("show");
+        } else {
+            $('#scroll_top').removeClass("show");
+        }
+    });
+
+    $("#scroll_top").click(function (e) {
+        e.preventDefault();
+        $('html, body').animate({ scrollTop: 0 }, 500);
+    });
+}
 
 // Dark / Light Mode Toggle Functionality
 const themeToggleBtn = document.getElementById("theme-toggle");
@@ -190,10 +214,6 @@ if (contactForm) {
             body: dataParams
         })
             .then(() => {
-                if (submit_btn && submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = "Send Message";
-                }
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = "Send Message";
