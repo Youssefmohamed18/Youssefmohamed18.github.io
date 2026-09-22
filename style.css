@@ -436,3 +436,39 @@ footer span a {
     top: 50%;
     transform: translateY(-50%);
 }
+
+/* ==========================================
+   Certifications Section Styling
+   ========================================== */
+.cert-card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px;
+    padding: 20px;
+    height: 100%;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.cert-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color) !important;
+}
+
+.cert-icon {
+    font-size: 1.8rem;
+    color: var(--accent-color);
+}
+
+.cert-card h4 {
+    color: var(--text-primary) !important;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.cert-card p {
+    color: var(--text-secondary) !important;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
