@@ -54,12 +54,12 @@ function erase() {
     }
 }
 
-// --- Smooth Scroll & Active Navbar State (Final Optimized Version) ---
+// --- Smooth Scroll & Active Navbar State (Position-Based Bulletproof Fix) ---
 document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".nav-container ul a, footer ul a");
     const navbarLinksOnly = document.querySelectorAll(".nav-container ul a");
 
-    // جمع الأقسام الحقيقية بناءً على الـ IDs الموجودة في الـ Navigation
+    // جمع الأقسام الحقيقية
     const sections = Array.from(navbarLinksOnly).map(link => {
         const href = link.getAttribute("href");
         if (href && href.startsWith("#") && href.length > 1) {
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (targetElement) {
                     e.preventDefault();
 
-                    // تحديث الـ Active class في الـ Navbar فوراً
+                    // تحديث الـ Active class فوراً عند الضغط
                     navbarLinksOnly.forEach(l => l.classList.remove("active"));
                     if (this.closest(".nav-container")) {
                         this.classList.add("active");
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
 
-                    // التمرير السلس للمكان المطلوب مع مراعاة ارتفاع الـ Navbar
+                    // التمرير السلس مع مراعاة ارتفاع الـ Navbar
                     window.scrollTo({
                         top: targetElement.offsetTop - 70,
                         behavior: "smooth"
@@ -99,31 +99,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 2. التحديث التلقائي أثناء السحب (تم تقصير الهوامش لتناسب الأقسام القصيرة جداً مثل About Me)
-    const observerOptions = {
-        root: null,
-        // هوامش ضيقة تلتقط القسم بمجرد دخوله لنطاق الرؤية العلوي
-        rootMargin: "-10px 0px -60% 0px",
-        threshold: 0
-    };
+    // 2. التحديث التلقائي أثناء الـ Scroll بناءً على موقع الـ Viewport الفعلي (يعالج مشاكل الأقسام القصيرة تماماً)
+    function updateActiveOnScroll() {
+        let scrollPosition = window.scrollY + 120; // إضافة مساحة تعويضية للـ Navbar
 
-    const observer = new IntersectionObserver(function (entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const id = entry.target.getAttribute("id");
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute("id");
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 navbarLinksOnly.forEach(link => {
                     link.classList.remove("active");
-                    if (link.getAttribute("href") === `#${id}`) {
+                    if (link.getAttribute("href") === `#${sectionId}`) {
                         link.classList.add("active");
                     }
                 });
             }
         });
-    }, observerOptions);
+    }
 
-    sections.forEach(section => {
-        observer.observe(section);
-    });
+    window.addEventListener("scroll", updateActiveOnScroll);
+    updateActiveOnScroll(); // تشغيلها مرة أول التحميل
 });
 
 // Scroll to Top Button Toggle & Action
