@@ -391,7 +391,6 @@ footer span a {
     visibility: hidden;
 }
 
-/* حركة الدوران للـ Spinner */
 .spinner {
     width: 55px;
     height: 55px;
@@ -438,16 +437,18 @@ footer span a {
 }
 
 /* ==========================================
-   Certifications Section Styling
+   Certifications Section Styling (Fixed & Optimized)
    ========================================== */
 .cert-card {
     background-color: var(--bg-card) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: 12px;
-    padding: 20px;
+    padding: 24px;
     height: 100%;
     box-shadow: 0 4px 15px var(--shadow-color);
     transition: transform 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 .cert-card:hover {
@@ -455,20 +456,27 @@ footer span a {
     border-color: var(--accent-color) !important;
 }
 
+.cert-card .d-flex {
+    margin-bottom: 12px;
+    align-items: center;
+}
+
 .cert-icon {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: var(--accent-color);
+    flex-shrink: 0;
 }
 
 .cert-card h4 {
     color: var(--text-primary) !important;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 600;
+    margin: 0;
 }
 
 .cert-card p {
     color: var(--text-secondary) !important;
-    font-size: 0.85rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
     margin-bottom: 0;
 }
