@@ -70,30 +70,35 @@ if (typeof $ !== 'undefined') {
         }
     });
 
-    // Auto Update Active Nav Link on Page Scroll (Scroll Spy)
+    // Auto Update Active Nav Link on Page Scroll (Scroll Spy - Accurate)
     $(window).scroll(function () {
-        const scrollPos = $(window).scrollTop() + 150;
+        const scrollPos = $(window).scrollTop() + 200; // مسافة تعويضية دقيقة لمنتصف الشاشة
         
         $("h2.heading_text").each(function () {
             const currHeading = $(this);
             const refElement = $("#" + currHeading.attr("id"));
             
-            if (refElement.length && refElement.offset().top <= scrollPos && refElement.offset().top + refElement.outerHeight() > scrollPos) {
-                $(".nav-container ul a").removeClass("active");
-                const headingId = currHeading.attr("id");
+            if (refElement.length) {
+                const topOffset = refElement.offset().top;
+                const elementHeight = refElement.outerHeight() + refElement.next().outerHeight(); // حساب طول العنصر مع القسم التابع له
                 
-                if (headingId === "who_am_i_text") {
-                    $(".nav-container ul a.who_am_i").addClass("active");
-                } else if (headingId === "certificates_text") {
-                    $(".nav-container ul a.cert_nav").addClass("active");
-                } else if (headingId === "skills_text") {
-                    $(".nav-container ul a.skills_nav").addClass("active");
-                } else if (headingId === "services_text") {
-                    $(".nav-container ul a.services").addClass("active");
-                } else if (headingId === "projects_text") {
-                    $(".nav-container ul a.projects_nav").addClass("active");
-                } else if (headingId === "contact_text") {
-                    $(".nav-container ul a.contact").addClass("active");
+                if (topOffset <= scrollPos && (topOffset + elementHeight) > scrollPos) {
+                    $(".nav-container ul a").removeClass("active");
+                    const headingId = currHeading.attr("id");
+                    
+                    if (headingId === "who_am_i_text") {
+                        $(".nav-container ul a.who_am_i").addClass("active");
+                    } else if (headingId === "certificates_text") {
+                        $(".nav-container ul a.cert_nav").addClass("active");
+                    } else if (headingId === "skills_text") {
+                        $(".nav-container ul a.skills_nav").addClass("active");
+                    } else if (headingId === "services_text") {
+                        $(".nav-container ul a.services").addClass("active");
+                    } else if (headingId === "projects_text") {
+                        $(".nav-container ul a.projects_nav").addClass("active");
+                    } else if (headingId === "contact_text") {
+                        $(".nav-container ul a.contact").addClass("active");
+                    }
                 }
             }
         });
