@@ -184,3 +184,17 @@ if (contactForm) {
             });
     });
 }
+
+
+// Smooth Scroll for Certifications Nav Link
+if (typeof $ !== 'undefined') {
+    $(".cert_nav").click(function (e) {
+        e.preventDefault();
+        const targetElement = $("#certificates_text");
+        if (targetElement.length) {
+            $(".nav-container ul a").removeClass('active');
+            $(this).addClass('active');
+            $('html, body').animate({ scrollTop: targetElement.offset().top - 90 }, 600);
+        }
+    });
+}
