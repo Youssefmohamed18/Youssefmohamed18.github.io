@@ -54,12 +54,12 @@ function erase() {
     }
 }
 
-// --- Smooth Scroll & Active Navbar State (Viewport Bounding Rect Final Fix) ---
+// --- Smooth Scroll & Active Navbar State (Corrected Scrollspy Logic) ---
 document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".nav-container ul a, footer ul a");
     const navbarLinksOnly = document.querySelectorAll(".nav-container ul a");
 
-    // جمع الأقسام الحقيقية
+    // جمع الأقسام الحقيقية بنفس ترتيب ظهورها في الـ nav (من فوق لتحت)
     const sections = Array.from(navbarLinksOnly).map(link => {
         const href = link.getAttribute("href");
         if (href && href.startsWith("#") && href.length > 1) {
@@ -99,11 +99,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 2. التحديث التلقائي أثناء الـ Scroll بناءً على موقع القسم الفعلي داخل الشاشة
+    // 2. التحديث التلقائي أثناء الـ Scroll
+    // بدل ما نحسب نطاق [top, top+height] لكل section (وده بيسبب تداخل وoverwrite غلط)،
+    // بنختار آخر section اللي الـ scroll فعليًا عدّى بدايتها. بما إن الـ sections
+    // مرتبة من فوق لتحت، آخر واحدة بتحقق الشرط هي الصح دايمًا، من غير أي تعارض.
     function updateActiveOnScroll() {
-        let scrollPosition = window.scrollY;
-        let windowHeight = window.innerHeight;
-        let documentHeight = document.documentElement.scrollHeight;
+        const scrollPosition = window.scrollY;
+        const documentHeight = document.documentElement.scrollHeight;
 
         // إذا وصل المستخدم لنهاية الصفحة تماماً، فعل آخر قسم تلقائياً
         if ((window.innerHeight + window.scrollY) >= documentHeight - 10) {
@@ -111,28 +113,24 @@ document.addEventListener("DOMContentLoaded", function () {
             if (lastSection) {
                 const lastId = lastSection.getAttribute("id");
                 navbarLinksOnly.forEach(link => {
-                    link.classList.remove("active");
-                    if (link.getAttribute("href") === `#${lastId}`) {
-                        link.classList.add("active");
-                    }
+                    link.classList.toggle("active", link.getAttribute("href") === `#${lastId}`);
                 });
             }
             return;
         }
 
+        // Default: أول section (About Me) هي الفعّالة طالما لسه فوق خالص
+        let currentId = sections.length > 0 ? sections[0].getAttribute("id") : null;
+
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 100; // مسافة تعويضية للـ Navbar
-            const sectionHeight = section.offsetHeight;
-            const sectionId = section.getAttribute("id");
-
-            if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
-                navbarLinksOnly.forEach(link => {
-                    link.classList.remove("active");
-                    if (link.getAttribute("href") === `#${sectionId}`) {
-                        link.classList.add("active");
-                    }
-                });
+            if (scrollPosition >= sectionTop) {
+                currentId = section.getAttribute("id");
             }
+        });
+
+        navbarLinksOnly.forEach(link => {
+            link.classList.toggle("active", link.getAttribute("href") === `#${currentId}`);
         });
     }
 
@@ -228,7 +226,6 @@ if (contactForm) {
             body: dataParams
         })
             .then(() => {
-                if,
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = "Send Message";
