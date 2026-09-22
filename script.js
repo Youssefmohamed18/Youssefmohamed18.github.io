@@ -55,7 +55,7 @@ function erase() {
     }
 }
 
-// Unified Smooth Scroll Navigation & Scroll Spy for Navbar
+// Smooth Scroll Navigation for Navbar & Footer Links
 if (typeof $ !== 'undefined') {
     $(".nav-container ul a, footer ul a").click(function (e) {
         const targetId = $(this).attr("href");
@@ -70,40 +70,8 @@ if (typeof $ !== 'undefined') {
         }
     });
 
-    // Auto Update Active Nav Link on Page Scroll (Scroll Spy - Accurate)
-    $(window).scroll(function () {
-        const scrollPos = $(window).scrollTop() + 200; // مسافة تعويضية دقيقة لمنتصف الشاشة
-        
-        $("h2.heading_text").each(function () {
-            const currHeading = $(this);
-            const refElement = $("#" + currHeading.attr("id"));
-            
-            if (refElement.length) {
-                const topOffset = refElement.offset().top;
-                const elementHeight = refElement.outerHeight() + refElement.next().outerHeight(); // حساب طول العنصر مع القسم التابع له
-                
-                if (topOffset <= scrollPos && (topOffset + elementHeight) > scrollPos) {
-                    $(".nav-container ul a").removeClass("active");
-                    const headingId = currHeading.attr("id");
-                    
-                    if (headingId === "who_am_i_text") {
-                        $(".nav-container ul a.who_am_i").addClass("active");
-                    } else if (headingId === "certificates_text") {
-                        $(".nav-container ul a.cert_nav").addClass("active");
-                    } else if (headingId === "skills_text") {
-                        $(".nav-container ul a.skills_nav").addClass("active");
-                    } else if (headingId === "services_text") {
-                        $(".nav-container ul a.services").addClass("active");
-                    } else if (headingId === "projects_text") {
-                        $(".nav-container ul a.projects_nav").addClass("active");
-                    } else if (headingId === "contact_text") {
-                        $(".nav-container ul a.contact").addClass("active");
-                    }
-                }
-            }
-        });
-
-        // Scroll to Top Button Toggle
+    // Scroll to Top Button Toggle
+    $(document).scroll(function () {
         var y = $(this).scrollTop();
         if (y >= 150) {
             $('#scroll_top').addClass("show");
@@ -118,6 +86,37 @@ if (typeof $ !== 'undefined') {
         $('html, body').animate({ scrollTop: 0 }, 500);
     });
 }
+
+// Modern Intersection Observer for Navbar Active State (Accurate & Smooth)
+document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll(".main-content h2.heading_text");
+    const navLinks = document.querySelectorAll(".nav-container ul a");
+
+    const observerOptions = {
+        root: null,
+        rootMargin: "-20% 0px -60% 0px",
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver(function (entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute("id");
+                navLinks.forEach(link => {
+                    link.classList.remove("active");
+                    const href = link.getAttribute("href");
+                    if (href && href.includes(id)) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+});
 
 // Dark / Light Mode Toggle Functionality
 const themeToggleBtn = document.getElementById("theme-toggle");
@@ -191,6 +190,10 @@ if (contactForm) {
             body: dataParams
         })
             .then(() => {
+                if (submit_btn && submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = "Send Message";
+                }
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = "Send Message";
