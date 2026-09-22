@@ -54,7 +54,7 @@ function erase() {
     }
 }
 
-// --- Smooth Scroll & Active Navbar State (Fully Fixed & Unified) ---
+// --- Smooth Scroll & Active Navbar State (Fully Fixed) ---
 document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".nav-container ul a, footer ul a");
     const navbarLinksOnly = document.querySelectorAll(".nav-container ul a");
@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (this.closest(".nav-container")) {
                         this.classList.add("active");
                     } else {
-                        // لو الضغط من الفوتر، حدد العنصر المماثل في الناف بار
                         navbarLinksOnly.forEach(l => {
                             if (l.getAttribute("href") === href) {
                                 l.classList.add("active");
@@ -90,9 +89,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
                     }
 
-                    // التمرير السلس للمكان المطلوب
+                    // التمرير السلس للمكان المطلوب مع مراعاة ارتفاع الـ Navbar
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80,
+                        top: targetElement.offsetTop - 70,
                         behavior: "smooth"
                     });
                 }
@@ -100,10 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 2. التحديث التلقائي أثناء السحب (Scroll Observer)
+    // 2. التحديث التلقائي أثناء السحب (Scroll Observer - تم ضبط الهوامش بدقة لتجنب تداخل الـ About Me)
     const observerOptions = {
         root: null,
-        rootMargin: "-30% 0px -50% 0px",
+        rootMargin: "-20% 0px -70% 0px",
         threshold: 0
     };
 
