@@ -54,7 +54,7 @@ function erase() {
     }
 }
 
-// --- Smooth Scroll & Active Navbar State (Position-Based Bulletproof Fix) ---
+// --- Smooth Scroll & Active Navbar State (Viewport Bounding Rect Final Fix) ---
 document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".nav-container ul a, footer ul a");
     const navbarLinksOnly = document.querySelectorAll(".nav-container ul a");
@@ -99,16 +99,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 2. التحديث التلقائي أثناء الـ Scroll بناءً على موقع الـ Viewport الفعلي (يعالج مشاكل الأقسام القصيرة تماماً)
+    // 2. التحديث التلقائي أثناء الـ Scroll بناءً على موقع القسم الفعلي داخل الشاشة
     function updateActiveOnScroll() {
-        let scrollPosition = window.scrollY + 120; // إضافة مساحة تعويضية للـ Navbar
+        let scrollPosition = window.scrollY;
+        let windowHeight = window.innerHeight;
+        let documentHeight = document.documentElement.scrollHeight;
+
+        // إذا وصل المستخدم لنهاية الصفحة تماماً، فعل آخر قسم تلقائياً
+        if ((window.innerHeight + window.scrollY) >= documentHeight - 10) {
+            const lastSection = sections[sections.length - 1];
+            if (lastSection) {
+                const lastId = lastSection.getAttribute("id");
+                navbarLinksOnly.forEach(link => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href") === `#${lastId}`) {
+                        link.classList.add("active");
+                    }
+                });
+            }
+            return;
+        }
 
         sections.forEach(section => {
-            const sectionTop = section.offsetTop;
+            const sectionTop = section.offsetTop - 100; // مسافة تعويضية للـ Navbar
             const sectionHeight = section.offsetHeight;
             const sectionId = section.getAttribute("id");
 
-            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
                 navbarLinksOnly.forEach(link => {
                     link.classList.remove("active");
                     if (link.getAttribute("href") === `#${sectionId}`) {
@@ -120,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     window.addEventListener("scroll", updateActiveOnScroll);
-    updateActiveOnScroll(); // تشغيلها مرة أول التحميل
+    updateActiveOnScroll(); // تشغيلها مرة عند التحميل
 });
 
 // Scroll to Top Button Toggle & Action
@@ -211,6 +228,7 @@ if (contactForm) {
             body: dataParams
         })
             .then(() => {
+                if,
                 if (submitBtn) {
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = "Send Message";
