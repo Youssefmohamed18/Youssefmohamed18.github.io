@@ -100,9 +100,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // 2. التحديث التلقائي أثناء الـ Scroll
-    // بدل ما نحسب نطاق [top, top+height] لكل section (وده بيسبب تداخل وoverwrite غلط)،
-    // بنختار آخر section اللي الـ scroll فعليًا عدّى بدايتها. بما إن الـ sections
-    // مرتبة من فوق لتحت، آخر واحدة بتحقق الشرط هي الصح دايمًا، من غير أي تعارض.
     function updateActiveOnScroll() {
         const scrollPosition = window.scrollY;
         const documentHeight = document.documentElement.scrollHeight;
@@ -154,22 +151,16 @@ if (typeof $!== 'undefined') {$(document).scroll(function () {
     });
 }
 
-
-// Sync Carousel Thumbnails with Active Slide
-if (typeof $ !== 'undefined') {
-    $('#carouselExample, .carousel').on('slide.bs.carousel', function (e) {
-        var index = $(e.relatedTarget).index();
-        // إزالة الـ active من كل الصور المصغرة وإضافتها للصورة الحالية
-        $('.carousel-thumb').removeClass('active');
-        $('.carousel-thumb').eq(index).addClass('active');
+// --- Sync Carousel Thumbnails with Active Slide (Fixed) ---
+if (typeof $!== 'undefined') {$('.carousel').on('slid.bs.carousel', function (e) {
+        var index = $(this).find('.carousel-item.active').index();
+        $('.carousel-thumb').removeClass('active');$('.carousel-thumb').eq(index).addClass('active');
     });
 
-    // لو الضغط على الصورة المصغرة نفسها ينقل السلايد فوق
+    // الضغط على الصورة المصغرة للانتقال للسلايد المناسب
     $('.carousel-thumb').click(function () {
-        var index = $(this).index();
-        $('.carousel, #carouselExample').carousel(index);
-        $('.carousel-thumb').removeClass('active');
-        $(this).addClass('active');
+        var index = $(this).index();$('.carousel').carousel(index);
+        $('.carousel-thumb').removeClass('active');$(this).addClass('active');
     });
 }
 
