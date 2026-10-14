@@ -151,30 +151,38 @@ if (typeof $!== 'undefined') {$(document).scroll(function () {
     });
 }
 
-// --- Keep project carousel thumbnails in sync without requiring jQuery ---
+// --- Keep project carousel thumbnails synchronized with the visible slide ---
 document.querySelectorAll('.carousel[id]').forEach(function (carousel) {
-    const target = `#${carousel.id}`;
+    const target = '#' + carousel.id;
+    const slides = Array.from(carousel.querySelectorAll('.carousel-item'));
     const thumbnails = Array.from(document.querySelectorAll('.carousel-thumb[data-bs-target]'))
         .filter(function (thumbnail) {
             return thumbnail.getAttribute('data-bs-target') === target;
         });
 
-    function setActiveThumbnail(index) {
+    function syncThumbnailWithSlide() {
+        const activeIndex = slides.findIndex(function (slide) {
+            return slide.classList.contains('active');
+        });
+        if (activeIndex < 0) return;
+
         thumbnails.forEach(function (thumbnail, thumbnailIndex) {
-            thumbnail.classList.toggle('active', thumbnailIndex === index);
+            thumbnail.classList.toggle('active', thumbnailIndex === activeIndex);
         });
     }
 
-    // Initialize the selected thumbnail from the currently visible slide.
-    const initialSlide = Array.from(carousel.querySelectorAll('.carousel-item'))
-        .findIndex(function (slide) { return slide.classList.contains('active'); });
-    if (initialSlide >= 0) setActiveThumbnail(initialSlide);
+    // Follow the slide's actual active class, regardless of how it changes.
+    const carouselInner = carousel.querySelector('.carousel-inner');
+    if (carouselInner) {
+        new MutationObserver(syncThumbnailWithSlide).observe(carouselInner, {
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
 
-    // Bootstrap emits this after arrow, thumbnail, swipe, and automatic changes.
-    carousel.addEventListener('slid.bs.carousel', function (event) {
-        const slides = Array.from(carousel.querySelectorAll('.carousel-item'));
-        setActiveThumbnail(slides.indexOf(event.relatedTarget));
-    });
+    carousel.addEventListener('slid.bs.carousel', syncThumbnailWithSlide);
+    syncThumbnailWithSlide();
 });
 // Dark / Light Mode Toggle Functionality
 const themeToggleBtn = document.getElementById("theme-toggle");
@@ -273,3 +281,4 @@ if (contactForm) {
             });
     });
 }
+
