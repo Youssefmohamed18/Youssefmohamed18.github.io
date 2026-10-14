@@ -151,16 +151,20 @@ if (typeof $!== 'undefined') {$(document).scroll(function () {
     });
 }
 
-// --- Sync Carousel Thumbnails with Active Slide (Fixed) ---
-if (typeof $!== 'undefined') {$('.carousel').on('slid.bs.carousel', function (e) {
-        var index = $(this).find('.carousel-item.active').index();
-        $('.carousel-thumb').removeClass('active');$('.carousel-thumb').eq(index).addClass('active');
+// --- Sync Carousel Thumbnails with Active Slide (Fixed & Instant) ---
+if (typeof $ !== 'undefined') {
+    $('#telecomCarousel').on('slide.bs.carousel', function (e) {
+        var index = $(e.relatedTarget).index();
+        $('.carousel-thumb').removeClass('active');
+        $('.carousel-thumb').eq(index).addClass('active');
     });
 
     // الضغط على الصورة المصغرة للانتقال للسلايد المناسب
     $('.carousel-thumb').click(function () {
-        var index = $(this).index();$('.carousel').carousel(index);
-        $('.carousel-thumb').removeClass('active');$(this).addClass('active');
+        var index = $(this).index();
+        $('#telecomCarousel').carousel(index);
+        $('.carousel-thumb').removeClass('active');
+        $(this).addClass('active');
     });
 }
 
