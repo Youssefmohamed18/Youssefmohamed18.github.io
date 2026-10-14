@@ -154,6 +154,25 @@ if (typeof $!== 'undefined') {$(document).scroll(function () {
     });
 }
 
+
+// Sync Carousel Thumbnails with Active Slide
+if (typeof $ !== 'undefined') {
+    $('#carouselExample, .carousel').on('slide.bs.carousel', function (e) {
+        var index = $(e.relatedTarget).index();
+        // إزالة الـ active من كل الصور المصغرة وإضافتها للصورة الحالية
+        $('.carousel-thumb').removeClass('active');
+        $('.carousel-thumb').eq(index).addClass('active');
+    });
+
+    // لو الضغط على الصورة المصغرة نفسها ينقل السلايد فوق
+    $('.carousel-thumb').click(function () {
+        var index = $(this).index();
+        $('.carousel, #carouselExample').carousel(index);
+        $('.carousel-thumb').removeClass('active');
+        $(this).addClass('active');
+    });
+}
+
 // Dark / Light Mode Toggle Functionality
 const themeToggleBtn = document.getElementById("theme-toggle");
 const themeIcon = document.getElementById("theme-icon");
