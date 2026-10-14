@@ -114,5 +114,36 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.carousel[id]').forEach(function (carousel) {
+        const target = '#' + carousel.id;
+        const thumbnails = Array.from(document.querySelectorAll('.carousel-thumb[data-bs-target]'))
+            .filter(function (thumbnail) {
+                return thumbnail.getAttribute('data-bs-target') === target;
+            });
+
+        function selectThumbnail(index) {
+            thumbnails.forEach(function (thumbnail, thumbnailIndex) {
+                thumbnail.classList.toggle('active', thumbnailIndex === index);
+            });
+        }
+
+        // Keep the highlight in sync immediately when a thumbnail is clicked.
+        thumbnails.forEach(function (thumbnail) {
+            thumbnail.addEventListener('click', function () {
+                selectThumbnail(Number(thumbnail.getAttribute('data-bs-slide-to')));
+            });
+        });
+
+        // Also sync when the carousel changes using arrows, swipes, or autoplay.
+        carousel.addEventListener('slid.bs.carousel', function (event) {
+            const slides = Array.from(carousel.querySelectorAll('.carousel-item'));
+            const activeIndex = slides.indexOf(event.relatedTarget);
+            if (activeIndex >= 0) selectThumbnail(activeIndex);
+        });
+    });
+});
+</script>
 </body>
 </html>
