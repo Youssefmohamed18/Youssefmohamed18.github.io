@@ -151,19 +151,34 @@ if (typeof $!== 'undefined') {$(document).scroll(function () {
     });
 }
 
-// --- Sync Carousel Thumbnails with Active Slide (Fixed & Instant) ---
+// --- Global Sync Carousel Thumbnails for All Project Pages ---
 if (typeof $ !== 'undefined') {
-    $('#telecomCarousel').on('slide.bs.carousel', function (e) {
+    // التفاعل مع أي Carousel في الموقع أوتوماتيك باستخدام الـ Class
+    $('.carousel').on('slide.bs.carousel', function (e) {
         var index = $(e.relatedTarget).index();
-        $('.carousel-thumb').removeClass('active');
-        $('.carousel-thumb').eq(index).addClass('active');
+        // نبحث عن الصور المصغرة داخل نفس الحاوية الخاصة بالـ Carousel الحالي
+        var $thumbnails = $(this).closest('.custom-card, .container').find('.carousel-thumb');
+        $thumbnails.removeClass('active');
+        $thumbnails.eq(index).addClass('active');
     });
 
-    // الضغط على الصورة المصغرة للانتقال للسلايد المناسب
+    // الضغط المباشر على أي صورة مصغرة في أي مشروع
     $('.carousel-thumb').click(function () {
         var index = $(this).index();
-        $('#telecomCarousel').carousel(index);
-        $('.carousel-thumb').removeClass('active');
+        // إيجاد الـ Carousel القريب من هذه الصورة المصغرة وتشغيله
+        var $carousel = $(this).closest('.custom-card, .container').find('.carousel');
+        if ($carousel.length) {
+            var carouselElement = $carousel[0];
+            var carouselInstance = bootstrap.Carousel.getInstance(carouselElement);
+            if (!carouselInstance) {
+                carouselInstance = new bootstrap.Carousel(carouselElement);
+            }
+            carouselInstance.to(index);
+        }
+        
+        // تفعيل الإطار على الصورة المختارة
+        var $thumbnails = $(this).closest('.d-flex').find('.carousel-thumb');
+        $thumbnails.removeClass('active');
         $(this).addClass('active');
     });
 }
