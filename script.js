@@ -151,38 +151,31 @@ if (typeof $!== 'undefined') {$(document).scroll(function () {
     });
 }
 
-// --- Global Sync Carousel Thumbnails for All Project Pages ---
-if (typeof $ !== 'undefined') {
-    // التفاعل مع أي Carousel في الموقع أوتوماتيك باستخدام الـ Class
-    $('.carousel').on('slide.bs.carousel', function (e) {
-        var index = $(e.relatedTarget).index();
-        // نبحث عن الصور المصغرة داخل نفس الحاوية الخاصة بالـ Carousel الحالي
-        var $thumbnails = $(this).closest('.custom-card, .container').find('.carousel-thumb');
-        $thumbnails.removeClass('active');
-        $thumbnails.eq(index).addClass('active');
-    });
+// --- Keep project carousel thumbnails in sync without requiring jQuery ---
+document.querySelectorAll('.carousel[id]').forEach(function (carousel) {
+    const target = `#${carousel.id}`;
+    const thumbnails = Array.from(document.querySelectorAll('.carousel-thumb[data-bs-target]'))
+        .filter(function (thumbnail) {
+            return thumbnail.getAttribute('data-bs-target') === target;
+        });
 
-    // الضغط المباشر على أي صورة مصغرة في أي مشروع
-    $('.carousel-thumb').click(function () {
-        var index = $(this).index();
-        // إيجاد الـ Carousel القريب من هذه الصورة المصغرة وتشغيله
-        var $carousel = $(this).closest('.custom-card, .container').find('.carousel');
-        if ($carousel.length) {
-            var carouselElement = $carousel[0];
-            var carouselInstance = bootstrap.Carousel.getInstance(carouselElement);
-            if (!carouselInstance) {
-                carouselInstance = new bootstrap.Carousel(carouselElement);
-            }
-            carouselInstance.to(index);
-        }
-        
-        // تفعيل الإطار على الصورة المختارة
-        var $thumbnails = $(this).closest('.d-flex').find('.carousel-thumb');
-        $thumbnails.removeClass('active');
-        $(this).addClass('active');
-    });
-}
+    function setActiveThumbnail(index) {
+        thumbnails.forEach(function (thumbnail, thumbnailIndex) {
+            thumbnail.classList.toggle('active', thumbnailIndex === index);
+        });
+    }
 
+    // Initialize the selected thumbnail from the currently visible slide.
+    const initialSlide = Array.from(carousel.querySelectorAll('.carousel-item'))
+        .findIndex(function (slide) { return slide.classList.contains('active'); });
+    if (initialSlide >= 0) setActiveThumbnail(initialSlide);
+
+    // Bootstrap emits this after arrow, thumbnail, swipe, and automatic changes.
+    carousel.addEventListener('slid.bs.carousel', function (event) {
+        const slides = Array.from(carousel.querySelectorAll('.carousel-item'));
+        setActiveThumbnail(slides.indexOf(event.relatedTarget));
+    });
+});
 // Dark / Light Mode Toggle Functionality
 const themeToggleBtn = document.getElementById("theme-toggle");
 const themeIcon = document.getElementById("theme-icon");
